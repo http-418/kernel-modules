@@ -17,10 +17,18 @@
 # limitations under the License.
 #
 
-node['kernel_modules']['modules'].each do |module_name, property|
-  kernel_module module_name do
-    property.each do |k, v|
-      instance_variable_set "@#{k}", v
-    end if property
-  end
-end
+resource_name :kernel_module
+default_action :save
+
+# Module name
+property :module, kind_of: String, name_property: true
+
+# "modprobe" command configuration (man morpdobe.conf)
+#   alias: [
+#     'usb-uhci uhci-hcd',
+#     'usb-ohci ohci-hcd',
+#   ]
+#   install: [
+#     'eth1394 /bin/true',
+#   ]
+property :modprobe, kind_of: Hash, default: nil
