@@ -7,15 +7,21 @@ provisioner:
 
 # Uncomment the following verifier to leverage Inspec instead of Busser (the
 # default verifier)
-# verifier:
-#   name: inspec
+verifier:
+  name: inspec
 
 platforms:
   - name: ubuntu-14.04
+  - name: debian-8.0
+  - name: centos-6.7
   - name: centos-7.1
+  - name: centos-7.2
 
 suites:
   - name: default
     run_list:
       - recipe[kernel-modules::default]
     attributes:
+      kernel_modules:
+        modules:
+          lp:
