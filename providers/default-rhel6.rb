@@ -38,7 +38,7 @@ _EOF
   end
 
   # Module loading options
-  template modprobe_file do
+  template modprobe_file do # ~FC021
     source 'modprobe.conf.erb'
     mode '0644'
     variables(

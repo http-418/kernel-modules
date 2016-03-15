@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: kernel-modules
+# Cookbook Name:: dmi
 # Spec:: default
 #
-# Copyright (c) 2016 The Authors, All Rights Reserved.
+# Copyright (c) 2015 The Authors, All Rights Reserved.
 
 require 'spec_helper'
 

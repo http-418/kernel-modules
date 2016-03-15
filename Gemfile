@@ -13,4 +13,5 @@ group :integration do
   gem 'vagrant-wrapper'
   gem 'test-kitchen'
   gem 'kitchen-vagrant'
+  gem 'chefspec'
 end
