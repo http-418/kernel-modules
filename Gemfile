@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rake'
+gem 'chef', '~> 12.5'
 gem 'berkshelf'
 gem 'kitchen-inspec'
 
