@@ -1,7 +1,7 @@
 name               'kernel-modules'
 maintainer         'Criteo'
 maintainer_email   'sre-core@criteo.com'
-license            'all_rights'
+license            'Apache v2.0'
 description        'Manage kernel modules on linux'
 long_description   IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 issues_url         'https://github.com/criteo-cookbooks/kernel-modules.git'
