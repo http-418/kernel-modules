@@ -19,6 +19,10 @@
 
 provides :kernel_module, platform_family: 'rhel', platform_version: '~> 6.0'
 
+def whyrun_supported?
+  true
+end
+
 use_inline_resources
 
 action :save do
