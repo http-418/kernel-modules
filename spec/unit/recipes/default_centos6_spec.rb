@@ -9,7 +9,10 @@ require 'spec_helper'
 describe 'kernel-modules::default' do
   context 'When all attributes are default, on an unspecified platform' do
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
+      runner = ChefSpec::ServerRunner.new(
+        platform: 'centos',
+        version: '6.7',
+      )
       runner.converge(described_recipe)
     end
 
