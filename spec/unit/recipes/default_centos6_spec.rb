@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: kernel-modules
 # Author:: Jeremy MAURO <j.mauro@criteo.com>
 #
@@ -17,10 +16,20 @@
 # limitations under the License.
 #
 
-node['kernel_modules']['modules'].each do |module_name, property|
-  kernel_module module_name do
-    property.each do |k, v|
-      instance_variable_set "@#{k}", v
-    end if property
+require 'spec_helper'
+
+describe 'kernel-modules::default' do
+  context 'When all attributes are default, on an unspecified platform' do
+    let(:chef_run) do
+      runner = ChefSpec::ServerRunner.new(
+        platform: 'centos',
+        version: '6.7',
+      )
+      runner.converge(described_recipe)
+    end
+
+    it 'converges successfully' do
+      expect { chef_run }.to_not raise_error
+    end
   end
 end

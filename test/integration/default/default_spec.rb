@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: kernel-modules
 # Author:: Jeremy MAURO <j.mauro@criteo.com>
 #
@@ -17,10 +16,6 @@
 # limitations under the License.
 #
 
-node['kernel_modules']['modules'].each do |module_name, property|
-  kernel_module module_name do
-    property.each do |k, v|
-      instance_variable_set "@#{k}", v
-    end if property
-  end
+describe kernel_module('lp') do
+  it { should be_loaded }
 end
