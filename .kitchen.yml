@@ -9,6 +9,7 @@ provisioner:
 # default verifier)
 verifier:
   name: inspec
+  format: documentation
 
 platforms:
   - name: ubuntu-14.04
@@ -20,8 +21,31 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[kernel-modules::default]
+      - recipe[test-module::default]
     attributes:
-      kernel_modules:
-        modules:
-          lp:
+      test-module:
+        action:
+        - load
+  - name: load
+    run_list:
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - load
+        onboot: false
+  - name: unload
+    run_list:
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - load
+        - unload
+  - name: remove
+    run_list:
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - remove
