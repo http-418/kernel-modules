@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: kernel-modules
 # Author:: Jeremy MAURO <j.mauro@criteo.com>
 #
@@ -17,10 +16,20 @@
 # limitations under the License.
 #
 
-node['kernel_modules']['modules'].each do |module_name, property|
-  kernel_module module_name do
-    property.each do |k, v|
-      send(k.to_sym, v)
-    end if property
+require_relative '../../helpers/inspec/spec_helper'
+
+# Making sure blacklist module not loaded
+describe kernel_module('lp') do
+  it { should_not be_loaded }
+end
+
+if os[:release].to_i == 7
+  # Testing module
+  describe kernel_module('btusb') do
+    it { should_not be_loaded }
+  end
+elsif os[:release].to_i == 6
+  describe kernel_module('nfs') do
+    it { should_not be_loaded }
   end
 end

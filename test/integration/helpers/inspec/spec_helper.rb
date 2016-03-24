@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: kernel-modules
 # Author:: Jeremy MAURO <j.mauro@criteo.com>
 #
@@ -17,10 +16,15 @@
 # limitations under the License.
 #
 
-node['kernel_modules']['modules'].each do |module_name, property|
-  kernel_module module_name do
-    property.each do |k, v|
-      send(k.to_sym, v)
-    end if property
+def module_path(type, distrib_version, module_name)
+  if %w(centos rhel).include?(os[:family])
+    if type == :load
+      return ::File.join('/etc/modprobe.d', module_name + '.conf')
+    end
+    if distrib_version == 6
+      ::File.join('/etc/sysconfig/modules', module_name + '.modules')
+    else
+      ::File.join('/etc/modules-load.d', module_name + '.conf')
+    end
   end
 end

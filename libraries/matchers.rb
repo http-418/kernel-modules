@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: kernel-modules
 # Author:: Jeremy MAURO <j.mauro@criteo.com>
 #
@@ -17,10 +16,21 @@
 # limitations under the License.
 #
 
-node['kernel_modules']['modules'].each do |module_name, property|
-  kernel_module module_name do
-    property.each do |k, v|
-      send(k.to_sym, v)
-    end if property
+if defined?(ChefSpec)
+  ChefSpec.define_matcher :kernel_module
+  def configure_kernel_module(resource)
+    ChefSpec::Matchers::ResourceMatcher.new(:kernel_module, :configure, resource)
+  end
+
+  def load_kernel_module(resource)
+    ChefSpec::Matchers::ResourceMatcher.new(:kernel_module, :load, resource)
+  end
+
+  def unload_kernel_module(resource)
+    ChefSpec::Matchers::ResourceMatcher.new(:kernel_module, :unload, resource)
+  end
+
+  def remove_kernel_module(resource)
+    ChefSpec::Matchers::ResourceMatcher.new(:kernel_module, :remove, resource)
   end
 end
