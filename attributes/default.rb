@@ -57,6 +57,6 @@ default['kernel_modules']['modules_load.d'] = value_for_platform_family(
 )
 
 # Modules loading options requirements
-default['kernel_modules']['dirs']['modprobe.d'] = '/etc/modprobe.d'
+default['kernel_modules']['modprobe.d'] = '/etc/modprobe.d'
 
 default['kernel_modules']['modules'] = {}

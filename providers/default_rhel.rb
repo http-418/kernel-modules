@@ -126,5 +126,5 @@ def modload_file
 end
 
 def modprobe_file
-  ::File.join(node['kernel_modules']['dirs']['modprobe.d'], new_resource.name + '.conf')
+  ::File.join(node['kernel_modules']['modprobe.d'], new_resource.name + '.conf')
 end
