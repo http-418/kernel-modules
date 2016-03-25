@@ -18,7 +18,7 @@
 
 return unless %w(centos rhel).include?(os[:family])
 
-require_relative '../../helpers/inspec/spec_helper'
+require(File.expand_path('../../helpers/inspec/spec_helper', File.dirname(__FILE__)))
 
 if os[:release].to_i == 7
   describe kernel_module('btusb') do

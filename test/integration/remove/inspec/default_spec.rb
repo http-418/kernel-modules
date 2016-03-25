@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-require_relative '../../helpers/inspec/spec_helper'
+require(File.expand_path('../../helpers/inspec/spec_helper', File.dirname(__FILE__)))
 
 # Making sure blacklist module not loaded
 describe kernel_module('lp') do
