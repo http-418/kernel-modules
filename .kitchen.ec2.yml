@@ -28,15 +28,48 @@ transport:
 provisioner:
   name: chef_zero
 
+# Uncomment the following verifier to leverage Inspec instead of Busser (the
+# default verifier)
+verifier:
+  name: inspec
+  format: documentation
+
 platforms:
+  - name: centos-6
+    driver:
+      image_id: ami-05cf2265
   - name: centos-7
     driver:
       image_id: ami-d2c924b2
-  - name: windows-2012r2
-    driver:
-      image_id: ami-df8767bf
 
 suites:
   - name: default
     run_list:
-      - recipe[kernel-modules]
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - load
+  - name: load
+    run_list:
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - load
+        onboot: false
+  - name: unload
+    run_list:
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - load
+        - unload
+  - name: remove
+    run_list:
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - remove
