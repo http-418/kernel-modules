@@ -45,31 +45,55 @@ platforms:
 suites:
   - name: default
     run_list:
+      - recipe[sudo]
       - recipe[test-module::default]
     attributes:
+      authorization:
+        sudo:
+          include_sudoers_d: true
+          sudoers_defaults:
+          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
       test-module:
         action:
         - load
   - name: load
     run_list:
+      - recipe[sudo]
       - recipe[test-module::default]
     attributes:
+      authorization:
+        sudo:
+          include_sudoers_d: true
+          sudoers_defaults:
+          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
       test-module:
         action:
         - load
         onboot: false
   - name: unload
     run_list:
+      - recipe[sudo]
       - recipe[test-module::default]
     attributes:
+      authorization:
+        sudo:
+          include_sudoers_d: true
+          sudoers_defaults:
+          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
       test-module:
         action:
         - load
         - unload
   - name: remove
     run_list:
+      - recipe[sudo]
       - recipe[test-module::default]
     attributes:
+      authorization:
+        sudo:
+          include_sudoers_d: true
+          sudoers_defaults:
+          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
       test-module:
         action:
         - remove
