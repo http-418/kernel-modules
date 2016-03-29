@@ -1,0 +1,99 @@
+---
+# The following environment variables are required:
+# - AWS_ACCESS_KEY_ID
+# - AWS_SECRET_ACCESS_KEY
+# - AWS_SSH_KEY_ID
+# - AWS_REGION
+#
+# Optional environment variables:
+# - AWS_SECURITY_GROUP
+# - AWS_SUBNET
+# - KITCHEN_NO_CONCURRENCY set it to true if you do not want concurrency
+
+driver:
+  name: ec2
+  instance_type: t2.micro
+  associate_public_ip: true
+  region: <%= ENV['AWS_REGION'] || 'us-west-2' %>
+  subnet_filter:
+    tag:   'Name'
+    value: <%= ENV['AWS_SUBNET'] || 'chef-testing-opensource-vpc-subnet' %>
+  security_group_filter:
+    tag:   'Name'
+    value: <%= ENV['AWS_SECURITY_GROUP'] || 'chef-testing-opensource-vpc-security-group' %>
+
+transport:
+  ssh_key: <%= ENV['HOME'] %>/.ssh/id_rsa
+
+provisioner:
+  name: chef_zero
+
+# Uncomment the following verifier to leverage Inspec instead of Busser (the
+# default verifier)
+verifier:
+  name: inspec
+  format: documentation
+
+platforms:
+  - name: centos-6
+    driver:
+      image_id: ami-05cf2265
+  - name: centos-7
+    driver:
+      image_id: ami-d2c924b2
+
+suites:
+  - name: default
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      authorization:
+        sudo:
+          include_sudoers_d: true
+          sudoers_defaults:
+          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      test-module:
+        action:
+        - load
+  - name: load
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      authorization:
+        sudo:
+          include_sudoers_d: true
+          sudoers_defaults:
+          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      test-module:
+        action:
+        - load
+        onboot: false
+  - name: unload
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      authorization:
+        sudo:
+          include_sudoers_d: true
+          sudoers_defaults:
+          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      test-module:
+        action:
+        - load
+        - unload
+  - name: remove
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      authorization:
+        sudo:
+          include_sudoers_d: true
+          sudoers_defaults:
+          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      test-module:
+        action:
+        - remove
