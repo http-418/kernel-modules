@@ -23,6 +23,19 @@ describe kernel_module('lp') do
   it { should_not be_loaded }
 end
 
+# Making sure unavailable firewire-core module is not loaded
+describe kernel_module('firewire-core') do
+  it { should_not be_loaded }
+end
+
+describe file(module_path(:init, os[:release].to_i, 'firewire-core')) do
+  it { should_not exist }
+end
+
+describe file(module_path(:load, os[:release].to_i, 'firewire-core')) do
+  it { should_not exist }
+end
+
 if os[:release].to_i == 7
   # Testing module
   describe kernel_module('btusb') do
@@ -40,7 +53,11 @@ if os[:release].to_i == 7
 
   # Shouldn't be any init module script
   describe file(module_path(:init, 7, 'btusb')) do
-    it { should_not  exist }
+    it { should_not exist }
+  end
+
+  describe file(module_path(:load, os[:release].to_i, 'btusb')) do
+    it { should exist }
   end
 
 elsif os[:release].to_i == 6
@@ -58,6 +75,10 @@ elsif os[:release].to_i == 6
 
   # Shouldn't be any init module script
   describe file(module_path(:init, 6, 'nfs')) do
-    it { should_not  exist }
+    it { should_not exist }
+  end
+
+  describe file(module_path(:load, os[:release].to_i, 'nfs')) do
+    it { should exist }
   end
 end

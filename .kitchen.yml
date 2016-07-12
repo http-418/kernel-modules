@@ -12,8 +12,6 @@ verifier:
   format: documentation
 
 platforms:
-  - name: ubuntu-14.04
-  - name: debian-8.0
   - name: centos-6.7
   - name: centos-7.1
   - name: centos-7.2
@@ -49,3 +47,11 @@ suites:
       test-module:
         action:
         - remove
+  - name: configure
+    run_list:
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - configure
+        onboot: true

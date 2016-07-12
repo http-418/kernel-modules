@@ -33,6 +33,7 @@ action :configure do
 
   # Module init loading section
   template modload_file do
+    not_if { new_resource.check_availability && ! new_resource.available? } # don't configure if check_availability asked.
     source "#{node['platform_family']}-#{node['platform_version'].to_i}/init-load.erb"
     cookbook 'kernel-modules'
     mode '0755'
@@ -45,6 +46,7 @@ action :configure do
 
   # Module loading options
   template modprobe_file do
+    not_if { new_resource.check_availability && ! new_resource.available? } # don't configure if check_availability asked.
     source 'modprobe.conf.erb'
     cookbook 'kernel-modules'
     mode '0644'
@@ -81,6 +83,7 @@ action :load do
     command "#{MODPROBE_BIN} -v #{new_resource.name}"
     not_if { current_resource.loaded? }
     not_if { new_resource.blacklisted? } # No need to load if blacklisted
+    not_if { new_resource.check_availability && ! new_resource.available? } # skip if missing module
   end
 end
 

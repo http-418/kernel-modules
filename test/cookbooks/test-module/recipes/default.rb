@@ -17,4 +17,9 @@
 # limitations under the License.
 #
 
+# delete firewire-core module to test 'check_availability' attribute
+file "/lib/modules/#{node['kernel']['release']}/kernel/drivers/firewire/firewire-core.ko" do
+  action :delete
+end
+
 include_recipe 'kernel-modules'

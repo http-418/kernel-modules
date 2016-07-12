@@ -97,3 +97,17 @@ suites:
       test-module:
         action:
         - remove
+  - name: configure
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      authorization:
+        sudo:
+          include_sudoers_d: true
+          sudoers_defaults:
+          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      test-module:
+        action:
+        - configure
+        onboot: true
