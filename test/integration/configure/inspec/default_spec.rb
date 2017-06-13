@@ -16,9 +16,9 @@
 # limitations under the License.
 #
 
-require(File.expand_path('../../helpers/inspec/spec_helper', File.dirname(__FILE__)))
+require File.expand_path('test/integration/helpers/inspec/spec_helper.rb')
 
-describe file(module_path(:init, os['release'].to_i, 'firewire-core')) do
+describe file(module_path(:init, 'firewire-core')) do
   it { should_not exist }
 end
 
@@ -27,7 +27,7 @@ describe kernel_module('firewire-core') do
 end
 
 if os[:release].to_i == 6
-  describe file(module_path(:init, os[:release].to_i, 'nfs')) do
+  describe file(module_path(:init, 'nfs')) do
     it { should exist }
   end
 
@@ -35,17 +35,15 @@ if os[:release].to_i == 6
     it { should_not be_loaded }
   end
 
-  describe file(module_path(:load, os[:release].to_i, 'nfs')) do
+  describe file(module_path(:load, 'nfs')) do
     it { should exist }
   end
-end
-
-if os[:release].to_i == 7
-  describe file(module_path(:init, os[:release].to_i, 'btusb')) do
+elsif os[:release].to_i == 7
+  describe file(module_path(:init, 'btusb')) do
     it { should exist }
   end
 
-  describe file(module_path(:load, os[:release].to_i, 'btusb')) do
+  describe file(module_path(:load, 'btusb')) do
     it { should exist }
   end
 

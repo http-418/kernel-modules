@@ -24,8 +24,6 @@ resource_name :kernel_module_rhel
 
 provides :kernel_module, platform_family: 'rhel'
 
-allowed_actions :configure, :load, :unload, :remove
-
 default_action :load
 
 # Module name

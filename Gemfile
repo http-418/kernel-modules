@@ -5,7 +5,6 @@ gem 'kitchen-vagrant'
 gem 'chefspec'
 gem 'rake'
 gem 'foodcritic'
-gem 'chef-zero-scheduled-task'
 gem 'chef'
 gem 'rubocop'
 
