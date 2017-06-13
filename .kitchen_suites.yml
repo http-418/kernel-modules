@@ -1,0 +1,43 @@
+  - name: default
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - load
+  - name: load
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - load
+        onboot: false
+  - name: unload
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - load
+        - unload
+  - name: remove
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - remove
+  - name: configure
+    run_list:
+      - recipe[sudo]
+      - recipe[test-module::default]
+    attributes:
+      test-module:
+        action:
+        - configure
+        onboot: true

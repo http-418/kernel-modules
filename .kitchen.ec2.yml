@@ -10,29 +10,41 @@
 # - AWS_SUBNET
 # - KITCHEN_NO_CONCURRENCY set it to true if you do not want concurrency
 
+verifier:
+  name: inspec
+  format: documentation
+
+provisioner:
+  attributes:
+    authorization:
+      sudo:
+        users:
+          - vagrant
+        passwordless: true
+        include_sudoers_d: true
+
 driver:
   name: ec2
   instance_type: t2.micro
   associate_public_ip: true
+  iam_profile_name: test-kitchen
   region: <%= ENV['AWS_REGION'] || 'us-west-2' %>
+  tags:
+    created-by: <%= ENV['AWS_SSH_KEY_ID'] %>
   subnet_filter:
     tag:   'Name'
     value: <%= ENV['AWS_SUBNET'] || 'chef-testing-opensource-vpc-subnet' %>
   security_group_filter:
     tag:   'Name'
     value: <%= ENV['AWS_SECURITY_GROUP'] || 'chef-testing-opensource-vpc-security-group' %>
+  block_device_mappings:
+    - device_name: /dev/sda1
+      ebs:
+        volume_type: gp2
+        delete_on_termination: true
 
 transport:
   ssh_key: <%= ENV['HOME'] %>/.ssh/id_rsa
-
-provisioner:
-  name: chef_zero
-
-# Uncomment the following verifier to leverage Inspec instead of Busser (the
-# default verifier)
-verifier:
-  name: inspec
-  format: documentation
 
 platforms:
   - name: centos-6
@@ -43,71 +55,4 @@ platforms:
       image_id: ami-d2c924b2
 
 suites:
-  - name: default
-    run_list:
-      - recipe[sudo]
-      - recipe[test-module::default]
-    attributes:
-      authorization:
-        sudo:
-          include_sudoers_d: true
-          sudoers_defaults:
-          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-      test-module:
-        action:
-        - load
-  - name: load
-    run_list:
-      - recipe[sudo]
-      - recipe[test-module::default]
-    attributes:
-      authorization:
-        sudo:
-          include_sudoers_d: true
-          sudoers_defaults:
-          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-      test-module:
-        action:
-        - load
-        onboot: false
-  - name: unload
-    run_list:
-      - recipe[sudo]
-      - recipe[test-module::default]
-    attributes:
-      authorization:
-        sudo:
-          include_sudoers_d: true
-          sudoers_defaults:
-          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-      test-module:
-        action:
-        - load
-        - unload
-  - name: remove
-    run_list:
-      - recipe[sudo]
-      - recipe[test-module::default]
-    attributes:
-      authorization:
-        sudo:
-          include_sudoers_d: true
-          sudoers_defaults:
-          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-      test-module:
-        action:
-        - remove
-  - name: configure
-    run_list:
-      - recipe[sudo]
-      - recipe[test-module::default]
-    attributes:
-      authorization:
-        sudo:
-          include_sudoers_d: true
-          sudoers_defaults:
-          - 'secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-      test-module:
-        action:
-        - configure
-        onboot: true
+<%= require 'erubis'; Erubis::Eruby.new(File.read('.kitchen_suites.yml')).evaluate %>
