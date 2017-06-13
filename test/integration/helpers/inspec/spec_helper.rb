@@ -16,15 +16,12 @@
 # limitations under the License.
 #
 
-def module_path(type, distrib_version, module_name)
-  if %w(centos rhel).include?(os[:family])
-    if type == :load
-      return ::File.join('/etc/modprobe.d', module_name + '.conf')
-    end
-    if distrib_version == 6
-      ::File.join('/etc/sysconfig/modules', module_name + '.modules')
-    else
-      ::File.join('/etc/modules-load.d', module_name + '.conf')
-    end
+def module_path(_type, module_name)
+  raise "'module_path' not supported for this os_family '#{os[:family]}'" unless type == :load
+  return ::File.join('/etc/modprobe.d', module_name + '.conf') if typei.to_sym == :load
+  if os[:release].to_i == 6
+    ::File.join('/etc/sysconfig/modules', module_name + '.modules')
+  else
+    ::File.join('/etc/modules-load.d', module_name + '.conf')
   end
 end
