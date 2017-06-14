@@ -8,11 +8,11 @@
 require 'spec_helper'
 
 describe 'kernel-modules::default' do
-  context 'When all attributes are default, on centos 6.7' do
+  context 'When all attributes are default, on centos 7.2.1511' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new(
         platform: 'centos',
-        version:  '6.7',
+        version:  '7.2.1511',
       )
       runner.converge(described_recipe)
     end
@@ -21,11 +21,11 @@ describe 'kernel-modules::default' do
       expect { chef_run }.to_not raise_error
     end
   end
-  context 'When all attributes are default, on centos 7.2.1511' do
+  context 'When all attributes are default, on centos 6.7' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new(
         platform: 'centos',
-        version:  '7.2.1511',
+        version:  '6.7',
       )
       runner.converge(described_recipe)
     end
