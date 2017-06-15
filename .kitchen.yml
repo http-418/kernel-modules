@@ -2,56 +2,33 @@
 driver:
   name: vagrant
 
-provisioner:
-  name: chef_zero
-
-# Uncomment the following verifier to leverage Inspec instead of Busser (the
-# default verifier)
 verifier:
   name: inspec
   format: documentation
 
+provisioner:
+  name: chef_zero
+
+  attributes:
+    authorization:
+      sudo:
+        users:
+          - vagrant
+        passwordless: true
+        include_sudoers_d: true
+
 platforms:
-  - name: centos-6.7
-  - name: centos-7.1
-  - name: centos-7.2
+- name: centos-6
+  transport:
+    name: speedy_ssh
+  driver_config:
+    box:     opscode-centos-6.7
+
+- name: centos-7
+  transport:
+    name: speedy_ssh
+  driver_config:
+    box:     criteo-centos-7.2-core
 
 suites:
-  - name: default
-    run_list:
-      - recipe[test-module::default]
-    attributes:
-      test-module:
-        action:
-        - load
-  - name: load
-    run_list:
-      - recipe[test-module::default]
-    attributes:
-      test-module:
-        action:
-        - load
-        onboot: false
-  - name: unload
-    run_list:
-      - recipe[test-module::default]
-    attributes:
-      test-module:
-        action:
-        - load
-        - unload
-  - name: remove
-    run_list:
-      - recipe[test-module::default]
-    attributes:
-      test-module:
-        action:
-        - remove
-  - name: configure
-    run_list:
-      - recipe[test-module::default]
-    attributes:
-      test-module:
-        action:
-        - configure
-        onboot: true
+<%= require 'erubis'; Erubis::Eruby.new(File.read('.kitchen_suites.yml')).evaluate if File.exists?('.kitchen_suites.yml') %>
