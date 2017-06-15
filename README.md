@@ -125,6 +125,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 [^1]*Note*: it has no effect unless CONFIG_MODULE_FORCE_UNLOAD was set when the kernel was compiled
+
 [author]:                   https://github.com/jmauro
 [repository]:               https://github.com/criteo-cookbooks/kernel-modules
 [build_status]:             https://api.travis-ci.org/criteo-cookbooks/kernel-modules.svg?branch=master
