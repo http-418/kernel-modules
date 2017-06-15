@@ -27,7 +27,7 @@ when /^6/
       'enable_ino64=1',
       'nfs4_disable_idmapping=0',
     ],
-    alias: 'nfs4',
+    alias:   'nfs4',
   }
 when /^7/
   default['kernel_modules']['modules']['btusb'] = {
@@ -35,9 +35,13 @@ when /^7/
       'reset=1',
       'ignore_sniffer=0',
     ],
-    alias: 'btusb1',
+    alias:   'btusb1',
   }
 end
+
+default['kernel_modules']['modules']['tulip'] = {
+  options: 'tulip_debug=1',
+}
 
 node['kernel_modules']['modules'].each do |mod, _property|
   default['kernel_modules']['modules'][mod]['action'] = node['test-module']['action'].map(&:to_sym)
